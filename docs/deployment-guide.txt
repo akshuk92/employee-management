@@ -1,0 +1,19 @@
+DEPLOYMENT GUIDE
+=================
+
+Prerequisites:
+- Java 17 installed
+- Maven 3.9+
+- Docker & Docker Compose
+- MySQL 8.0 (or use docker-compose)
+
+Steps:
+1. Clone the repository
+2. Configure config/database.properties with your DB credentials
+3. Run ./scripts/build.sh to build the jar
+4. Run ./scripts/deploy.sh to deploy to /opt/apps/employee-management
+5. Verify with: curl http://localhost:8080/actuator/health
+
+Rollback:
+- Previous jar versions are kept in backup/
+- Restore with: cp backup/employee-management-<version>.jar target/

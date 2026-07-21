@@ -1,0 +1,31 @@
+# Maven
+target/
+
+# Logs
+logs/
+*.log
+
+# Temporary folders
+temp/
+uploads/
+
+# Backups
+backup/
+project-backup/
+
+# Downloads
+downloads/
+
+# Certificates
+certificates/
+*.key
+*.crt
+
+# IDE files
+.idea/
+.vscode/
+
+# Operating System files
+Thumbs.db
+.DS_Store
+secrets/

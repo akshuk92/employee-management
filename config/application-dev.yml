@@ -1,0 +1,17 @@
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/employee_db_dev
+    username: dev_user
+    password: dev_pass123
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8081
+
+logging:
+  level:
+    root: DEBUG

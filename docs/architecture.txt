@@ -1,0 +1,30 @@
+EMPLOYEE MANAGEMENT SYSTEM - ARCHITECTURE OVERVIEW
+=====================================================
+
+1. PRESENTATION LAYER
+   - REST Controllers (EmployeeController, DepartmentController)
+   - Handles HTTP requests/responses in JSON format
+
+2. SERVICE LAYER
+   - Business logic (EmployeeService, ReportService)
+   - Validation and transformation
+
+3. PERSISTENCE LAYER
+   - Spring Data JPA Repositories
+   - MySQL database backend
+
+4. INFRASTRUCTURE
+   - Docker container for app runtime
+   - MySQL container for database
+   - Jenkins pipeline for CI/CD
+   - Nginx (optional) as reverse proxy
+
+5. DIRECTORY LAYOUT
+   /app
+     ├── config/       -> externalized configuration
+     ├── logs/         -> runtime logs mounted as volume
+     ├── uploads/      -> persisted user uploads
+     └── app.jar        -> executable application
+
+6. DEPLOYMENT FLOW
+   Developer -> Git Push -> Jenkins Build -> Docker Image -> Deploy to Server

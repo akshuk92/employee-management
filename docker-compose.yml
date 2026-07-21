@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: employee-management-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - DB_HOST=db
+      - DB_PORT=3306
+    depends_on:
+      - db
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    networks:
+      - emp-network
+
+  db:
+    image: mysql:8.0
+    container_name: employee-management-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: employee_db
+      MYSQL_USER: emp_user
+      MYSQL_PASSWORD: emp_pass123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - emp-network
+
+volumes:
+  db-data:
+
+networks:
+  emp-network:
+    driver: bridge
