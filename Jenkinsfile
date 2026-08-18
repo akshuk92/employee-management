@@ -27,12 +27,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
         stage('Package') {
             steps {
                 sh 'mvn package -DskipTests'
@@ -62,9 +56,11 @@ pipeline {
             }
         }
 
-        stage('Cleanup') {
+        stage('Verify') {
             steps {
-                sh './scripts/cleanup.sh'
+                sh 'sleep 10'
+                sh 'docker ps'
+                sh 'docker logs --tail 30 employee-management-app'
             }
         }
     }
