@@ -12,9 +12,11 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/akshuk92/employee-management.git'
+                git branch: 'main',
+                    url: 'https://github.com/akshuk92/employee-management.git'
             }
         }
 
@@ -37,10 +39,26 @@ pipeline {
             }
         }
 
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t employee-management-app:${BUILD_NUMBER} .'
+                sh 'docker tag employee-management-app:${BUILD_NUMBER} employee-management-app:latest'
+            }
+        }
+
         stage('Deploy') {
             steps {
-                sh 'chmod +x scripts/deploy.sh'
-                sh './scripts/deploy.sh'
+                sh '''
+                    docker rm -f employee-management-app || true
+
+                    docker run -d \
+                      --name employee-management-app \
+                      --network employee-management_emp-network \
+                      -p 8081:8080 \
+                      -e DB_HOST=employee-management-db \
+                      -e DB_PORT=3306 \
+                      employee-management-app:${BUILD_NUMBER}
+                '''
             }
         }
 
@@ -55,6 +73,7 @@ pipeline {
         success {
             echo "Build #${env.BUILD_NUMBER} succeeded for ${APP_NAME}"
         }
+
         failure {
             echo "Build #${env.BUILD_NUMBER} failed. Check console output."
         }
