@@ -20,6 +20,25 @@ pipeline {
             }
         }
 
+        stage('Verify Environment') {
+            steps {
+                sh '''
+                    echo "===== JAVA ====="
+                    java -version
+
+                    echo "===== MAVEN ====="
+                    echo "MAVEN_HOME=$MAVEN_HOME"
+                    echo "PATH=$PATH"
+
+                    echo "Maven location:"
+                    which mvn
+
+                    echo "Maven version:"
+                    mvn -version
+                '''
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'chmod +x scripts/build.sh'
@@ -58,9 +77,11 @@ pipeline {
 
         stage('Verify') {
             steps {
-                sh 'sleep 10'
-                sh 'docker ps'
-                sh 'docker logs --tail 30 employee-management-app'
+                sh '''
+                    sleep 10
+                    docker ps
+                    docker logs --tail 30 employee-management-app
+                '''
             }
         }
     }
@@ -72,6 +93,10 @@ pipeline {
 
         failure {
             echo "Build #${env.BUILD_NUMBER} failed. Check console output."
+        }
+
+        always {
+            echo "Pipeline execution completed."
         }
     }
 }
